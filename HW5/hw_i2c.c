@@ -93,13 +93,24 @@ int main() {
     // configure BMP280
     init();
 
-
+    int count = 0;
 
     sleep_ms(250); // sleep so that data polling and register update don't collide
     while (1) {
         // blink gp25
-        gpio_put(LED_PIN, 1);
-        
+
+        count++;
+
+        if (count < 50){
+            gpio_put(LED_PIN, 1);
+        }
+        else if (count < 100){
+            gpio_put(LED_PIN, 0);
+        }
+        else{
+            count = 0;
+        }
+
         sleep_ms(10);        
         if (read() == 1){ // if gp0 is high
             set(0); // set gp7 high
@@ -108,8 +119,6 @@ int main() {
             set(1); // set gp7 low
         }
         
-        gpio_put(LED_PIN, 0);
-
         sleep_ms(10);
         
     }
